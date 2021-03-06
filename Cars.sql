@@ -6,7 +6,7 @@ use cars;
 
 create TABLE cars
 (
-	id int auto_increment not null primary key,
+    id int auto_increment not null primary key,
     mark VARCHAR(20),
     model VARCHAR(20),
     engineVolume double,
