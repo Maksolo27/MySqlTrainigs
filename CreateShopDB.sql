@@ -168,3 +168,33 @@ select e.Fname, e.LName, e.MName, c.Fname, c.Lname, c.Mname, sum(od.Totalprice) 
         ON Orders.CustomerNO = c.CustomerNO
 		Group by e.Fname, e.Lname, e.Mname;
 
+SELECT (SELECT FName FROM Employees 
+  WHERE EmployeeID = (SELECT EmployeeID FROM Orders
+       WHERE Orders.OrderID = OrderDetails.OrderID)
+  ) AS FName,
+     (SELECT LName FROM Employees 
+   WHERE EmployeeID = (SELECT EmployeeID FROM Orders
+        WHERE Orders.OrderID = OrderDetails.OrderID)
+  ) AS LName,
+  (SELECT MName FROM Employees 
+   WHERE EmployeeID = (SELECT EmployeeID FROM Orders
+        WHERE Orders.OrderID = OrderDetails.OrderID)
+  ) AS MName,   
+  (SELECT FName FROM Customers
+  WHERE CustomerNo = (SELECT CustomerNO from Orders
+		Where OrderDetails.OrderID = Orders.OrderID)
+	)AS CustomerFName,
+   (SELECT LName FROM Customers
+  WHERE CustomerNo = (SELECT CustomerNO from Orders
+		Where OrderDetails.OrderID = Orders.OrderID)
+	)AS CustomerLName,
+   (SELECT MName FROM Customers
+  WHERE CustomerNo = (SELECT CustomerNO from Orders
+		Where OrderDetails.OrderID = Orders.OrderID)
+	)AS CustomerMName,
+  SUM(TotalPrice) as TotalSold
+FROM OrderDetails
+GROUP BY FName, LName, MName, CustomerFName, CustomerLName, CustomerMName;
+
+
+
