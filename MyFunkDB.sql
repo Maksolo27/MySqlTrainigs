@@ -36,25 +36,34 @@ values(1, 20000, "Manager"),
 insert into personalinformation(pi_id, marriaged, age, place)
 values(1, true, 25, "Kyiv"),
 (2, false, 30, "Kharkiv"),
-(3, false, 27, "Kyiv")
+(3, false, 27, "Kyiv");
 
-Delimiter |
-Create procedure UpdateValues(IN newsalary int, IN newPosition varchar(30))
-begin
-declare id int;
-start transaction;
-insert salarys(salary, position) 
-values(newsalary, newposition);
+
+delimiter |
+drop procedure Ins; |
+CREATE PROCEDURE Ins(iname varchar(40), inumber varchar(20))
+BEGIN
+DECLARE id int;
+START TRANSACTION;
+INSERT pnumber(name,pnumber )
+VALUES ( iname , inumber );
 set id = @@identity;
-
-if exists(select * from salarys where salary = newsalary and position = newposition and sal_id != id)
-then rollback;
+if exists(select * from pnumber where name = iname and pnumber = inumber and id != n_id )
+then ROLLBACK;
 end if;
-commit;
-end;
+COMMIT;
+END;
 |
-call updatevalues(30000, "HR-Manager");
-select * from salarys;
+call ins("Dima", "38096440212");
+
+select * from pnumber
+	left join personalinformation pi
+    on pi.pi_id = pnumber.n_id
+    left join salarys s
+    on s.sal_id = pnumber.n_id
+    group by name;
+
+
 
 
 
